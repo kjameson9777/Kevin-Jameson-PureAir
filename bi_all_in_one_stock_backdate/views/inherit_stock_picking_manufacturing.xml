@@ -27,11 +27,11 @@
 <!--                     <button name="button_done_mark" string="Validate" type="object" class="oe_highlight"/> -->
 <!--                 </xpath> -->
                 
-                <xpath expr="//button[@name='button_mark_done']" position="attributes">
+                <xpath expr="//button[@name='button_mark_done'][3]" position="attributes">
                     <attribute name="invisible">1</attribute>
                     <attribute name="attrs">{}</attribute>
                 </xpath>
-                <xpath expr="//button[@name='button_mark_done']" position="after">
+                <xpath expr="//button[@name='button_mark_done'][3]" position="after">
                 	<button name="button_done_mark" attrs="{'invisible': [
                          '&amp;',
                          '|',
