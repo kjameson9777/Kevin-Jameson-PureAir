@@ -11,8 +11,15 @@
                     <field name="line_remark"/>
                 </xpath>
 
-                <xpath expr="//button[@name='button_mark_done'][1]" position="replace">
-                    <button name="button_done_mark" attrs="{'invisible': ['|', ('state', 'in', ('draft', 'cancel', 'done', 'to_close')), ('qty_producing', '=', 0)]}" string="Validate" type="object" class="oe_highlight"/>
+                <xpath expr="//button[@name='button_mark_done'][1]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    <attribute name="attrs">{}</attribute>
+                </xpath>
+
+                <xpath expr="//button[@name='button_mark_done'][1]" position="after">
+                    <button name="button_done_mark" 
+                            attrs="{'invisible': ['|', ('state', 'in', ('draft', 'cancel', 'done', 'to_close')), 
+                                ('qty_producing', '=', 0)]}" string="Validate" type="object" class="oe_highlight"/>
                 </xpath>
                 
                 
@@ -20,8 +27,11 @@
 <!--                     <button name="button_done_mark" string="Validate" type="object" class="oe_highlight"/> -->
 <!--                 </xpath> -->
                 
-                
-               <xpath expr="//button[@name='button_mark_done']" position="replace">
+                <xpath expr="//button[@name='button_mark_done']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    <attribute name="attrs">{}</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_mark_done']" position="after">
                 	<button name="button_done_mark" attrs="{'invisible': [
                          '&amp;',
                          '|',
