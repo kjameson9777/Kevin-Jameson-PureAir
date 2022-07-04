@@ -18,7 +18,7 @@ class PurchaseOrder(models.Model):
             'view_mode': 'form',
             'res_model': 'confirmation.date.wizard.purchase',
             'view_id': False,
-            'context': context,
+            'context': {'default_po_id':self.id},
             'type': 'ir.actions.act_window',
             'target': 'new',
             'nodestroy': True,
@@ -32,7 +32,7 @@ class ConfirmDateWizard(models.TransientModel):
 
 
     confirmation_force_date = fields.Datetime(string='Confirm Force Date', index=True, help="Date on which the sales order is confirmed.", copy=False)
-
+    po_id = fields.Many2one("purchase.order")
     def action_confirm(self):
         context = dict(self._context) or {}
         if context.get('active_id', False):
