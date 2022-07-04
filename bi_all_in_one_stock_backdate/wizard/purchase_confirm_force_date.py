@@ -36,7 +36,7 @@ class ConfirmDateWizard(models.TransientModel):
     def action_confirm(self):
         context = dict(self._context) or {}
         if context.get('active_id', False):
-            po_obj = self.env['purchase.order'].browse(context.get('active_id'))
+            po_obj = self.po_id
             po_obj.button_confirm()
             po_obj.date_approve = self.confirmation_force_date
             picking = self.env['stock.picking'].search([('purchase_id', '=', po_obj.id), ('state', 'not in', ['cancel'])])
