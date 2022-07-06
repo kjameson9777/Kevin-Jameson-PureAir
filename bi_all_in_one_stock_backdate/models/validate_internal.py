@@ -134,7 +134,7 @@ class StockPickingIn(models.Model):
 						'type': 'ir.actions.act_window',
 						'target': 'new',
 						'res_id': False,
-						'context': order.env.context,
+						'context': {'default_picking_id':self.id},
 					}
 			elif custom.picking_type_id.code == 'mrp_operation':
 				return {

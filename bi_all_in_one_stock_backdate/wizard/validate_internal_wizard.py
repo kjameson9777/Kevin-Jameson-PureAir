@@ -12,15 +12,15 @@ class WizardInternalTransfer(models.TransientModel):
 
 	transfer_date = fields.Datetime('BackDate',required=True)
 	transfer_remark = fields.Char('Remark',required=True)
-
+	picking_id = fields.Many2one("stock.picking")
 
 	def custom_backdate_button(self):
-		if self.transfer_date >= datetime.now():
+		if self.transfer_date and self.transfer_date >= datetime.now():
 			raise UserError(_('Please Enter Correct Back Date'))
 		
 		active_models1 = self._context.get('active_model')
 		if active_models1 == 'stock.picking':
-			custom_stock_picking_ids = self.env['stock.picking'].browse(self._context.get('active_id'))
+			custom_stock_picking_ids = self.picking_id
 			for picking in custom_stock_picking_ids.filtered(lambda x: x.state not in ('cancel')):
 				for data in picking.move_lines:
 					data.write({'date':self.transfer_date,'move_remark': self.transfer_remark,'move_date':self.transfer_date})
@@ -46,7 +46,7 @@ class WizardInternalTransfer(models.TransientModel):
 			return custom_stock_picking_ids.button_validate()
 
 		elif active_models1 == 'stock.picking.type':
-			custom_stock_picking_ids = self.env['stock.picking'].browse(self._context.get('active_id'))
+			custom_stock_picking_ids = self.picking_id
 			stock_type_id = self.env['stock.picking.type'].browse(self._context.get('active_id'))
 			stock_picking_type = self.env['stock.picking'].search([('picking_type_id','=',stock_type_id.id)],
 				order='id desc',limit=1)
@@ -74,7 +74,7 @@ class WizardInternalTransfer(models.TransientModel):
 
 
 		elif active_models1 == 'purchase.order':
-			custom_stock_picking_ids = self.env['stock.picking'].browse(self._context.get('active_id'))
+			custom_stock_picking_ids = self.picking_id
 			custom_purchase_ids = self.env['purchase.order'].browse(self._context.get('active_id'))
 			for custom_purchase_stock in self.env['stock.picking'].search([('purchase_id','=',custom_purchase_ids.id)]):
 				for picking in custom_purchase_stock:
