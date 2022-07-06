@@ -14,18 +14,20 @@ class RemarkSoldItem(models.TransientModel):
 
 	transfer_date = fields.Datetime(string="Transfer Date")
 	remark = fields.Char(string="Remarks")
+	picking_id = fields.Many2one("stock.picking")
     
 	def action_apply(self):
 		if self.transfer_date >= datetime.now():
 			raise UserError(_('Please Enter Correct Back Date'))
 		active_model = self._context.get('active_model')
 		picking_ids = False
+		sale_order = None
 		if active_model == 'sale.order':
 			sale_order_ids = self.env['sale.order'].browse(self._context.get('active_ids'))
 			picking_list = [sale_id.picking_ids.ids for sale_id in sale_order_ids][0]
-			picking_ids = self.env['stock.picking'].browse(picking_list)
+			picking_ids = self.picking_id
 		elif active_model == 'stock.picking':
-			picking_ids = self.env['stock.picking'].browse(self._context.get('active_ids'))
+			picking_ids = self.picking_id
 		elif active_model == 'stock.picking.type':
 			picking_type_id = self.env['stock.picking.type'].browse(self._context.get('active_id'))
 			picking_ids = self.env['stock.picking'].search([('picking_type_id','=', picking_type_id.id),
